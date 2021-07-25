@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-msbuild:
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        build: [
+                 msbuild_cl_x64_release,
+               ]
+
+        include:
+          - { build: msbuild_cl_x64_release, compiler: msbuild_cl, arch: x64, build_config: Release }
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Set MSVC envrioment
+        uses: ilammy/msvc-dev-cmd@v1.6.0
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Build (cl)
+        run: MSBuild.exe -m -property:Configuration=${{ matrix.build_config }} -property:Platform=${{ matrix.arch }} unicon.sln
+
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          name: unicon
+          path: |
+            ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.dll
+            ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.exe
+            README.md
