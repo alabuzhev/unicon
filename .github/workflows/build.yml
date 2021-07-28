@@ -38,6 +38,6 @@ jobs:
         with:
           name: unicon.${{ matrix.arch }}
           path: |
-            ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.dll
-            ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.exe
+            bin/${{ matrix.build_config }}.${{ matrix.arch }}/unicon.dll
+            bin/${{ matrix.build_config }}.${{ matrix.arch }}/unicon.exe
             README.md
