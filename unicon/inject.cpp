@@ -88,8 +88,6 @@ __declspec(dllexport) void inject(unsigned Pid)
 	if (!is_conhost(Name))
 		throw std::runtime_error("not conhost");
 
-	SCOPE_EXIT{ CloseHandle(Process); };
-
 	const auto FullDllPathSize = (wcslen(FullDllPath) + 1) * sizeof(wchar_t);
 
 	const auto DllPathAddress = VirtualAllocEx(Process, {}, FullDllPathSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
