@@ -14,10 +14,12 @@ jobs:
       matrix:
         build: [
                  msbuild_cl_x64_release,
+                 msbuild_cl_x86_release,
                ]
 
         include:
           - { build: msbuild_cl_x64_release, compiler: msbuild_cl, arch: x64, build_config: Release }
+          - { build: msbuild_cl_x86_release, compiler: msbuild_cl, arch: x86, build_config: Release }
 
     steps:
       - name: Checkout source
@@ -34,7 +36,7 @@ jobs:
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
-          name: unicon
+          name: unicon.${{ matrix.arch }}
           path: |
             ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.dll
             ${{ matrix.arch }}/${{ matrix.build_config }}/unicon.exe
