@@ -85,8 +85,9 @@ __declspec(dllexport) void inject(unsigned Pid)
 	if (!QueryFullProcessImageName(Process, {}, Name, &NameSize))
 		throw std::runtime_error("QueryFullProcessImageName");
 
+	// It if's not conhost, it's either OpenConsole (which shouldn't need this already) or csrss (which doesn't need this yet).
 	if (!is_conhost(Name))
-		throw std::runtime_error("not conhost");
+		return;
 
 	const auto FullDllPathSize = (wcslen(FullDllPath) + 1) * sizeof(wchar_t);
 
@@ -105,5 +106,14 @@ __declspec(dllexport) void inject(unsigned Pid)
 	if (!RemoteThread)
 		throw std::runtime_error("CreateRemoteThread");
 
+	SCOPE_EXIT{ CloseHandle(RemoteThread); };
+
 	WaitForSingleObject(RemoteThread, INFINITE);
+
+	DWORD ExitCode;
+	if (!GetExitCodeThread(RemoteThread, &ExitCode))
+		throw std::runtime_error("GetExitCodeThread");
+
+	if (!ExitCode)
+		throw std::runtime_error("Patch failed");
 }
