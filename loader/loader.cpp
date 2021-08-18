@@ -15,7 +15,7 @@ int main(int const Argc, char const* const Argv[])
 	}
 	catch (std::exception const& e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Error: " << e.what() << std::endl;
 		return 1;
 	}
 }

@@ -65,6 +65,10 @@ inline HMODULE GetCurrentModuleHandle()
 
 __declspec(dllexport) void inject(unsigned Pid)
 {
+	BOOL IsWow64{};
+	if (IsWow64Process(GetCurrentProcess(), &IsWow64) && IsWow64)
+		throw std::runtime_error("WOW64 is not supported. Please use the x64 version.");
+
 	if (!Pid)
 	{
 		Pid = GetProcessConsoleHostProcessId(GetCurrentProcess());

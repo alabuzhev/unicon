@@ -45,7 +45,7 @@ extern "C" void WINAPI SetStartupInfoW(const struct PluginStartupInfo* PSInfo)
 
 		const wchar_t* Items[]
 		{
-			L"Error",
+			L"Unicon: error",
 			Str.data()
 		};
 
