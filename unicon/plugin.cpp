@@ -51,4 +51,7 @@ extern "C" void WINAPI SetStartupInfoW(const struct PluginStartupInfo* PSInfo)
 
 		PSInfo->Message(&MainUUID, &MainUUID, FMSG_WARNING | FMSG_MB_OK, {}, Items, std::size(Items), 0);
 	}
+
+	if (const auto Handle = reinterpret_cast<HANDLE>(PSInfo->PluginsControl(INVALID_HANDLE_VALUE, PCTL_FINDPLUGIN, PFM_GUID, const_cast<GUID*>(&MainUUID))))
+		PSInfo->PluginsControl(Handle, PCTL_UNLOADPLUGIN, 0, {});
 }
