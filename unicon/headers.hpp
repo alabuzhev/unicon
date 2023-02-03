@@ -13,3 +13,4 @@
 #include <psapi.h>
 #include <rpc.h>
 #include <tlhelp32.h>
+#include <versionhelpers.h>
